@@ -39,7 +39,7 @@ jobs:
         uses: astral-sh/setup-uv@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version-file: "src/${{ matrix.package }}/.python-version"
 
@@ -76,7 +76,7 @@ jobs:
         uses: astral-sh/setup-uv@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version-file: "src/${{ matrix.package }}/.python-version"
 
