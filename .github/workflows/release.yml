@@ -41,7 +41,7 @@ jobs:
           cat RELEASE_NOTES.md
 
       - name: Release notes
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: release-notes
           path: RELEASE_NOTES.md
