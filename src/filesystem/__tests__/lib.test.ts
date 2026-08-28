@@ -14,6 +14,7 @@ import {
   getFileStats,
   readFileContent,
   writeFileContent,
+  moveFile,
   // Search & filtering functions
   searchFilesWithValidation,
   // File editing functions
@@ -336,6 +337,29 @@ describe('Lib Functions', () => {
 
         await expect(writeFileContent('/test/script.sh', 'new content')).resolves.toBeUndefined();
         expect(mockFs.unlink).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('moveFile', () => {
+      it('moves the file when the destination does not exist', async () => {
+        const enoent = Object.assign(new Error('not found'), { code: 'ENOENT' });
+        mockFs.lstat.mockRejectedValueOnce(enoent);
+        mockFs.rename.mockResolvedValueOnce(undefined);
+
+        await moveFile('/test/source.txt', '/test/dest.txt');
+
+        expect(mockFs.rename).toHaveBeenCalledWith('/test/source.txt', '/test/dest.txt');
+      });
+
+      it('fails without overwriting when the destination already exists', async () => {
+        // lstat resolving means the destination is occupied.
+        mockFs.lstat.mockResolvedValueOnce({} as any);
+
+        await expect(moveFile('/test/source.txt', '/test/dest.txt')).rejects.toThrow(
+          'Destination already exists'
+        );
+
+        expect(mockFs.rename).not.toHaveBeenCalled();
       });
     });
 
