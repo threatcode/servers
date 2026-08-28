@@ -122,10 +122,10 @@ async function resolveUnicodeEquivalentPath(absolutePath: string): Promise<strin
     }
 
     if (equivalentMatches.length === 0) {
-      if (index === relativeParts.length - 1) {
-        return path.join(currentPath, requestedPart);
-      }
-      throw new Error(`Parent directory does not exist: ${path.join(currentPath, requestedPart)}`);
+      // Nothing below this point exists yet, so there are no symlinks left to
+      // resolve. currentPath is already realpath'd and inside an allowed
+      // directory; append the missing tail so create_directory can mkdir -p it.
+      return path.join(currentPath, ...relativeParts.slice(index));
     }
 
     currentPath = await fs.realpath(path.join(currentPath, equivalentMatches[0]));
