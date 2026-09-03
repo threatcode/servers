@@ -132,7 +132,7 @@ export class KnowledgeGraphManager {
     );
 
     try {
-      await fs.writeFile(tempFilePath, lines.join("\n"));
+      await fs.writeFile(tempFilePath, lines.join("\n") + "\n");
       await fs.rename(tempFilePath, this.memoryFilePath);
     } catch (error) {
       // Never leave a stray temp file behind on failure.
